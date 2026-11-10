@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة عجلة الأسماء - السائل والمجيب</title>
+    <style>
+        body {
+            font-family: 'Tahoma', sans-serif;
+            background: linear-gradient(135deg, #74b9ff, #a29bfe);
+            color: #2d3436;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #0984e3;
+            margin-bottom: 10px;
+        }
+        textarea {
+            width: 90%;
+            height: 100px;
+            padding: 10px;
+            border: 2px solid #dfe6e9;
+            border-radius: 8px;
+            font-size: 16px;
+            resize: none;
+            margin-bottom: 15px;
+        }
+        button {
+            background-color: #00b894;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #00a8ff;
+        }
+        .result-box {
+            margin-top: 25px;
+            padding: 15px;
+            background: #dfe6e9;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .role {
+            color: #d63031;
+            font-size: 24px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🎡 عجلة السائل والمجيب</h1>
+        <p>اكتب أسماء المشاركين (كل اسم في سطر مستقل):</p>
+        <textarea id="namesInput" placeholder="محمد&#10;أحمد&#10;سارة&#10;فاطمة">محمد
+أحمد
+سارة
+فاطمة
+عمر</textarea>
+        <br>
+        <button onclick="spinWheel()">ابدأ السحب والتدوير!</button>
+
+        <div class="result-box" id="resultArea">
+            اضغط على الزر لاختيار السائل والمجيب!
+        </div>
+    </div>
+
+    <script>
+        function spinWheel() {
+            let input = document.getElementById('namesInput').value;
+            let names = input.split('\n').map(name => name.trim()).filter(name => name !== '');
+
+            if (names.length < 2) {
+                alert('الرجاء إدخال اسمين على الأقل لتبدأ اللعبة!');
+                return;
+            }
+
+            // اختيار السائل عشوائياً
+            let askerIndex = Math.floor(Math.random() * names.length);
+            let asker = names[askerIndex];
+
+            // اختيار المجيب عشوائياً (مع التأكد أنه ليس نفس الشخص إذا أمكن، أو نتركه عشوائياً بالكامل)
+            let responderIndex;
+            do {
+                responderIndex = Math.floor(Math.random() * names.length);
+            } while (responderIndex === askerIndex && names.length > 1);
+            
+            let responder = names[responderIndex];
+
+            // عرض النتيجة
+            let resultHTML = `
+                <div>🗣️ **السائل:** <span class="role">${asker}</span></div>
+                <hr style="border: 0.5px solid #ccc; margin: 15px 0;">
+                <div>🎯 **المجيب:** <span class="role">${responder}</span></div>
+            `;
+
+            document.getElementById('resultArea').innerHTML = resultHTML;
+        }
+    </script>
+
+</body>
+</html>
